@@ -11,22 +11,29 @@ const Tree = (array) => {
     const buildTree = (array, start, end) => {
         if(start > end) return null;
 
+        array.sort((a, b)=>{
+            if(a > b) return 1;
+            if(a < b) return -1;
+            return 0;
+        })
+
         const mid = parseInt((start+end) / 2);
-        const root = Node(array[mid]);
+        const node = Node(array[mid]);
 
-        root.left = buildTree(array, start, mid - 1);
-        root.right = buildTree(array, mid + 1, end);
+        node.left = buildTree(array, start, mid - 1);
+        node.right = buildTree(array, mid + 1, end);
 
-        return root;
+        return node;
+    }
+
+    const insert = (value) => {
+        
     }
 
     return { buildTree };
 }
 
-const sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const myTree = Tree();
-const myBuiltTree = myTree.buildTree(sampleArray, 0, (sampleArray.length-1));
-
+// log tree in a structured format
 const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node.right !== null) {
         prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
@@ -37,4 +44,12 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 }
 
-prettyPrint(myBuiltTree)
+let sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
+// remove duplicates
+sampleArray = [...new Set(sampleArray)];
+
+const myTree = Tree();
+const myBuiltTree = myTree.buildTree(sampleArray, 0, (sampleArray.length-1));
+
+prettyPrint(myBuiltTree);
