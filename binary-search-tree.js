@@ -8,6 +8,9 @@ const Node = (value) => {
 const Tree = (array) => {
     const sortedArr = [...new Set(array)].sort((a,b) => a-b);
     let root = buildTree(sortedArr, 0, sortedArr.length-1);
+    const inorderArray = [];
+    const preorderArray = [];
+    const postorderArray = [];
 
     function buildTree(sortedArr, start, end){
         if(start > end) return null;
@@ -95,7 +98,41 @@ const Tree = (array) => {
         if(levelOrderArray.length > 0) return levelOrderArray;
     }
 
-    return { insert, deleteNode, find, levelOrder, root };
+    const inorder = (callBackFn, currentNode = root) => {
+        if(currentNode === null) return currentNode;
+
+        inorder(callBackFn, currentNode.left);
+
+        callBackFn ? callBackFn(currentNode) : inorderArray.push(currentNode.value)
+
+        inorder(callBackFn, currentNode.right);
+
+        if(inorderArray.length > 0) return inorderArray;
+    }
+
+    const preorder = (callBackFn, currentNode = root) => {
+        if(currentNode === null) return currentNode;
+
+        callBackFn ? callBackFn(currentNode) : preorderArray.push(currentNode.value)
+
+        preorder(callBackFn, currentNode.left);
+        preorder(callBackFn, currentNode.right);
+
+        if(preorderArray.length > 0) return preorderArray;
+    }
+
+    const postorder = (callBackFn, currentNode = root) => {
+        if(currentNode === null) return currentNode;
+
+        postorder(callBackFn, currentNode.left);
+        postorder(callBackFn, currentNode.right);
+
+        callBackFn ? callBackFn(currentNode) : postorderArray.push(currentNode.value)
+
+        if(postorderArray.length > 0) return postorderArray;
+    }
+
+    return { insert, deleteNode, find, levelOrder, inorder, preorder, postorder, root };
 }
 let sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
@@ -115,4 +152,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 }
 
 prettyPrint(myTree.root);
-console.log(myTree.levelOrder(console.log));
+console.log(myTree.inorder());
+console.log(myTree.preorder());
+console.log(myTree.postorder());
