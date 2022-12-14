@@ -78,7 +78,24 @@ const Tree = (array) => {
 
     }
 
-    return { insert, deleteNode, find, root };
+    const levelOrder = (callBackFn) => {
+        let levelOrderArray = [];
+        let queue = [root];
+
+        while(queue.length !== 0){
+            let currentNode = queue[0];
+            callBackFn ? callBackFn(currentNode) : levelOrderArray.push(currentNode.value);
+
+            if(currentNode.left !== null) queue.push(currentNode.left);
+            if(currentNode.right !== null) queue.push(currentNode.right);
+            
+            queue.shift();
+        }
+
+        if(levelOrderArray.length > 0) return levelOrderArray;
+    }
+
+    return { insert, deleteNode, find, levelOrder, root };
 }
 let sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
@@ -98,4 +115,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 }
 
 prettyPrint(myTree.root);
-// console.log(myTree.find(1));
+console.log(myTree.levelOrder(console.log));
