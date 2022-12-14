@@ -131,14 +131,17 @@ const Tree = (array) => {
 
         if(postorderArray.length > 0) return postorderArray;
     }
+    
+    const height = (node) => {};
 
-    return { insert, deleteNode, find, levelOrder, inorder, preorder, postorder, root };
+    const depth = (node) => {};
+
+    const isBalanced = () => {};
+
+    const rebalance = () => {};
+
+    return { insert, deleteNode, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced, rebalance, root };
 }
-let sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-
-const myTree = Tree(sampleArray);
-myTree.insert(11);
-// myTree.deleteNode(11);
 
 // log tree in a structured format
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -151,7 +154,13 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 }
 
+let sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const myTree = Tree(sampleArray);
+
+myTree.insert(11);
+// myTree.deleteNode(11);
+
 prettyPrint(myTree.root);
-console.log(myTree.inorder());
-console.log(myTree.preorder());
-console.log(myTree.postorder());
+// console.log(myTree.inorder());
+// console.log(myTree.preorder());
+// console.log(myTree.postorder());
