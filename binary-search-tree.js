@@ -66,13 +66,25 @@ const Tree = (array) => {
         return minv;
     }
 
-    return { insert, deleteNode, root };
+    const find = (value) => {
+        if(root === null || root.value === value) return root;
+
+        if(value < root.value){
+            root = root.left;
+            return find(value);
+        } 
+        root = root.right;
+        return find(value);
+
+    }
+
+    return { insert, deleteNode, find, root };
 }
 let sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = Tree(sampleArray);
 myTree.insert(11);
-myTree.deleteNode(11);
+// myTree.deleteNode(11);
 
 // log tree in a structured format
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -86,3 +98,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 }
 
 prettyPrint(myTree.root);
+// console.log(myTree.find(1));
