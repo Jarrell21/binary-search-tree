@@ -129,35 +129,49 @@ const Tree = (array) => {
         if(postorderArray.length > 0) return postorderArray;
     }
     
-    const height = (node) => {};
+    const height = (node = root) => {
+        if(node === null) return node;
 
-    const depth = (node) => {};
+        const leftHeight = height(node.left);
+        const rightHeight = height(node.right);
 
-    const isBalanced = () => {};
+        return  Math.max(leftHeight, rightHeight) + 1;
+    };
 
-    const rebalance = () => {};
+    const depth = (value, node = root, count = 0) => {
+        if(node === null) return node;
+        if(value === node.value) return count;
 
-    return { insert, deleteNode, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced, rebalance, root };
+        if(value < node.value){
+            return depth(value, node.left, count + 1);
+        } else {
+            return depth(value, node.right, count + 1);
+        }
+    };
+
+    const isBalanced = () => {
+        if(root === null) return root;
+
+        return Math.abs(height(root.left) - height(root.right)) <= 1 ? true : false;
+    };
+
+    const rebalance = () => {
+        const balancedArray = inorder();
+        root = buildTree(balancedArray, 0, balancedArray.length-1);
+    };
+
+    // log tree in a structured format
+    const prettyPrint = (node = root, prefix = '', isLeft = true) => {
+        if (node.right !== null) {
+            prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+        }
+        console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
+        if (node.left !== null) {
+            prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+        }
+    }
+
+    return { insert, deleteNode, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced, rebalance, prettyPrint };
 }
 
-// log tree in a structured format
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-    if (node.right !== null) {
-        prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-    }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
-    if (node.left !== null) {
-        prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-    }
-}
-
-let sampleArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const myTree = Tree(sampleArray);
-
-myTree.insert(11);
-// myTree.deleteNode(11);
-
-prettyPrint(myTree.root);
-console.log(myTree.inorder());
-console.log(myTree.preorder());
-console.log(myTree.postorder());
+module.exports = Tree;
