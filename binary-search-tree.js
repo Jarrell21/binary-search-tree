@@ -8,9 +8,6 @@ const Node = (value) => {
 const Tree = (array) => {
     const sortedArr = [...new Set(array)].sort((a,b) => a-b);
     let root = buildTree(sortedArr, 0, sortedArr.length-1);
-    const inorderArray = [];
-    const preorderArray = [];
-    const postorderArray = [];
 
     function buildTree(sortedArr, start, end){
         if(start > end) return null;
@@ -98,34 +95,34 @@ const Tree = (array) => {
         if(levelOrderArray.length > 0) return levelOrderArray;
     }
 
-    const inorder = (callBackFn, currentNode = root) => {
-        if(currentNode === null) return currentNode;
+    const inorder = (callBackFn, currentNode = root, inorderArray = []) => {
+        if(currentNode === null) return;
 
-        inorder(callBackFn, currentNode.left);
+        inorder(callBackFn, currentNode.left, inorderArray);
 
         callBackFn ? callBackFn(currentNode) : inorderArray.push(currentNode.value)
 
-        inorder(callBackFn, currentNode.right);
+        inorder(callBackFn, currentNode.right, inorderArray);
 
         if(inorderArray.length > 0) return inorderArray;
     }
 
-    const preorder = (callBackFn, currentNode = root) => {
-        if(currentNode === null) return currentNode;
+    const preorder = (callBackFn, currentNode = root, preorderArray = []) => {
+        if(currentNode === null) return;
 
         callBackFn ? callBackFn(currentNode) : preorderArray.push(currentNode.value)
 
-        preorder(callBackFn, currentNode.left);
-        preorder(callBackFn, currentNode.right);
+        preorder(callBackFn, currentNode.left, preorderArray);
+        preorder(callBackFn, currentNode.right, preorderArray);
 
         if(preorderArray.length > 0) return preorderArray;
     }
 
-    const postorder = (callBackFn, currentNode = root) => {
-        if(currentNode === null) return currentNode;
+    const postorder = (callBackFn, currentNode = root, postorderArray = []) => {
+        if(currentNode === null) return;
 
-        postorder(callBackFn, currentNode.left);
-        postorder(callBackFn, currentNode.right);
+        postorder(callBackFn, currentNode.left, postorderArray);
+        postorder(callBackFn, currentNode.right, postorderArray);
 
         callBackFn ? callBackFn(currentNode) : postorderArray.push(currentNode.value)
 
@@ -161,6 +158,6 @@ myTree.insert(11);
 // myTree.deleteNode(11);
 
 prettyPrint(myTree.root);
-// console.log(myTree.inorder());
-// console.log(myTree.preorder());
-// console.log(myTree.postorder());
+console.log(myTree.inorder());
+console.log(myTree.preorder());
+console.log(myTree.postorder());
